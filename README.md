@@ -17,6 +17,19 @@ docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart always -v /va
 
 [Portainer URL](https://portainer.readthedocs.io/en/stable/deployment.html) 
 
+### NGINX Proxy Manager
+
+~~~
+docker run -d --name=nginx-proxy-manager -p 8181:8181 -p 8080:8080 -p 4443:4443 -v /docker/nginx-proxy-manager:/config:rw jlesage/nginx-proxy-manager
+~~~
+
+Default Username/Password:
+admin@example.com / changeme
+
+*Note* You'll find it easier to set the port configuration like this `-p 80:8080 -p 443:4443`
+
+[Project Page](https://github.com/jlesage/docker-nginx-proxy-manager)
+
 ### Radaar - Movie Management
 
 ~~~

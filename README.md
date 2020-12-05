@@ -17,6 +17,22 @@ docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart always -v /va
 
 [Portainer URL](https://portainer.readthedocs.io/en/stable/deployment.html) 
 
+### MongoDB - Database
+
+```
+docker run -it \
+    -e MONGO_INITDB_ROOT_USERNAME=admin \
+    -e MONGO_INITDB_ROOT_PASSWORD=<password> \
+    -v /docker/mongo/db:/data/db \
+    -v /docker/mongo/config:/data/configdb \
+    --name mongodb \
+    -p 27017:27017 \
+    --restart unless-stopped \
+    -d mongo
+```
+
+[Dockerhub](https://hub.docker.com/_/mongo)
+
 ### NGINX Proxy Manager
 
 ~~~

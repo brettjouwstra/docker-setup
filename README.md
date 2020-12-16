@@ -9,6 +9,28 @@ docker run -d --name=registrywatch -p 8600:8000 -v /docker/regui/config.yml:/opt
 
 [Reference](https://github.com/Quiq/docker-registry-ui)
 
+
+### Docker Registry - Includes htpasswd
+
+```Dockerfile
+# Install htpasswd 
+apt install apache2-utils
+
+# Create the file 
+htpasswd -c /file/path/.htpasswd username
+
+docker run -d \
+  --restart=always \
+  --name registry \
+  -e "REGISTRY_AUTH=htpasswd" \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
+  -e REGISTRY_HTTP_SECRET="secret" \
+  -p 5000:5000 \
+  registry:2
+```
+
 ### Portainer - GUI for Docker
 
 ```
@@ -32,6 +54,43 @@ docker run -it \
 ```
 
 [Dockerhub](https://hub.docker.com/_/mongo)
+
+This command is for arm cpus (i.e. a Raspberry Pi)
+
+```Dockerfile
+docker run -d \
+--name rpi3-mongodb3 \
+--restart unless-stopped \
+-v /docker/mongo/data/db:/data/db \
+-v /docker/mongo/data/configdb:/data/configdb \
+-p 27017:27017 \
+-p 28017:28017 \
+andresvidal/rpi3-mongodb3:latest \
+mongod --auth
+
+# Afer, connect to the container 
+
+docker exec -it rpi3-mongodb3 mongo admin
+
+# Create a username/password for your user
+
+db.createUser({ user: "name", pwd: "password", roles: [ { role: "userAdminAnyDatabase", db: "admin" } ] })
+```
+
+### NGINX
+
+~~~Dockerfile
+docker run -d \
+  --name=nginx \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=America/Denver \
+  -p 80:80 \
+  -p 443:443 \
+  -v /docker/nginx/appdata/config:/config \
+  --restart unless-stopped \
+  ghcr.io/linuxserver/nginx
+~~~
 
 ### NGINX Proxy Manager
 

@@ -1,6 +1,55 @@
 # docker-setup
 A collection of "docker run" commands to setup various apps
 
+The additional files in the repo are instructions on some more indepth setups or other potentially useful material. 
+
+
+### Ackee - Analytics minus the bad parts
+
+Requires MongoDB
+
+```dockerfile
+docker run -p 3000:3000 -e ACKEE_MONGODB='mongodb://db:27017/ackee' -e ACKEE_USERNAME='username' -e ACKEE_PASSWORD='mypass' --name=ackee electerious/ackee
+```
+
+Running behind a reverse proxy you'll likely need these headers set
+
+```
+proxy_set_header          Access-Control-Allow-Origin "*" always;
+proxy_set_header          Access-Control-Allow-Methods "GET, POST, PATCH, OPTIONS" always;
+proxy_set_header          Access-Control-Allow-Headers "Content-Type" always;
+```
+
+[Github](https://github.com/electerious/Ackee)
+
+[Official Site](https://ackee.electerious.com/)
+
+
+### Bitwarden Password Manager
+
+```dockerfile
+docker run -d --name bitwarden -v /docker/bitwarden:/data -p 8640:80 bitwardenrs/server:latest
+```
+
+[Reference](https://hub.docker.com/r/bitwardenrs/server)
+
+### Caddy Webserver 
+
+~~~dockerfile
+docker run \
+    --name caddy \
+    -d \
+    -p 58080:8080 \
+    -p 80:80 -p 443:443 \
+    -v /docker/caddyofficial/Caddyfile:/etc/Caddyfile \
+    -v /docker/caddyofficial:/root/.caddy \
+    --log-opt "max-size=100m" \
+    -e "HTTP_USER=foo" \
+    -e "HTTP_PASS=bar" \
+    --restart always \
+    jpillora/caddy
+~~~
+
 ### Docker Registry UI
 
 ~~~
@@ -38,6 +87,19 @@ docker run -d -p 9000:9000 -p 8000:8000 --name portainer --restart always -v /va
 ```
 
 [Portainer URL](https://portainer.readthedocs.io/en/stable/deployment.html) 
+
+### Lychee - Photo Management
+
+```dockerfile
+docker run -d --name=lychee \
+  -e DB_HOST=<host-ip> \
+  -e DB_USERNAME=username \
+  -e DB_PASSWORD=secret \ 
+  -e DB_DATABASE=db_name \
+  -v /docker/lychee/config:/config
+  -v /docker/lychee/pictures:/pictures
+   linuxserver/lychee
+```
 
 ### MongoDB - Database
 
@@ -105,6 +167,23 @@ admin@example.com / changeme
 
 [Project Page](https://github.com/jlesage/docker-nginx-proxy-manager)
 
+
+### Plex Media Server (PMS)
+
+```dockerfile
+docker run -d --name=plex \
+   --net=host -e PUID=1000 \
+   -e PGID=1000 \
+   -e VERSION=docker \
+   -e UMASK_SET=022 `#optional` \
+  -e PLEX_CLAIM= `#optional` \
+  -v /mnt/ssd/plex/config:/config \
+  -v /mnt/ssd/plex/tv:/tv \ 
+  -v /mnt/ssd/plex/movies:/movies \ 
+  --restart unless-stopped \
+  linuxserver/plex 
+```
+
 ### Radaar - Movie Management
 
 ~~~
@@ -153,6 +232,37 @@ docker run -d --name=shiori -p 8080:8080 -v /docker/shiori:/srv/shiori radhifadl
 docker run -d --name snibox -v /docker/snibox:/app/db/database -p 3000:3000 --restart always snowmean/snibox-sqlite
 ~~~
 
+### uLogger - Personal Tracker
+
+```dockerfile
+docker run -d \
+    -p 7180:80 \
+    -e ULOGGER_ENABLE_SETUP=1 \
+    -e ULOGGER_DB_HOST=172.18.0.3 \
+    -e ULOGGER_DB_USER=dbuser \
+    -e ULOGGER_DB_PASSWORD=dbpass \
+    -e ULOGGER_LATITUDE=LAT \  # Enter actual coordiantes in these
+    -e ULOGGER_LONGITUDE=LONG \
+    -e ULOGGER_ADMIN_USER=admin \
+    –network docker_default \
+    plaguedr/ulogger
+```
+
+### Visual Studio Code Server
+
+```dockerfile
+docker run -d \
+  --name=code-server \
+  -e PUID=1000 \
+  -e PGID=1000 \
+  -e TZ=America/Denver \
+  -e PASSWORD=password `#optional` \
+  -e SUDO_PASSWORD=password `#optional` \
+  -p 8443:8443 \
+  -v /docker/vcode/config:/config \
+  --restart unless-stopped \
+linuxserver/code-server
+```
 
 ### WebDAV
 
@@ -163,3 +273,14 @@ docker run --restart always -v /docker/webdav:/var/lib/dav \
 ~~~
 
 [Reference](https://hub.docker.com/r/bytemark/webdav/)
+
+
+### Webservers (Tiny ones)
+
+```dockerfile
+docker run -d --name tinyweb -e "TINYWEB_PORT=9909" -p 80:9909 -v /docker/web:/www cyd01/tinyweb
+
+# or 
+
+docker run --name=mini-cal -p 8180:3000 -v /home/brett/mincal:/app/public:ro -d tobilg/mini-webserver
+```

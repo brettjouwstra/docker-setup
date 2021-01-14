@@ -80,6 +80,28 @@ docker run -d \
   registry:2
 ```
 
+### Firebird - The Open Source SQL
+
+```shell
+docker run -d \
+	--name firebird \	
+	-p 3050:3050 \
+	-v /somehostdir/firebird/backup/:/var/lib/firebird/2.5/backup/ \
+	-v /somehostdir/firebird/data/:/var/lib/firebird/2.5/data/ \
+almeida/firebird
+```
+Firebird credentials 
+    Username: SYSDBA 
+    Password: masterkey 
+  
+ ```
+ //enter container console
+$ docker exec -i -t firebird /bin/bash
+
+//restore backup
+$ gbak -c -v -user SYSDBA -password masterkey /var/lib/firebird/2.5/backup/dbname.fbk localhost:/var/lib/firebird/2.5/data/dbname.fdb
+```
+
 ### Portainer - GUI for Docker
 
 ```

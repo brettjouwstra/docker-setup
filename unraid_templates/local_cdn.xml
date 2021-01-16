@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<Container version="1">
+  <Name>Local CDN</Name>
+  <Repository>reg.bre.tt/local-cdn</Repository>
+  <Registry>https://reg.bre.tt/local-cdn</Registry>
+  <Network>bridge</Network>
+  <Privileged>false</Privileged>
+  <Support>https://google.com</Support>
+  <Overview></Overview>
+  <Date>2021-01-16</Date>
+  <Changes>
+  </Changes>
+  <Category>Tools:</Category>
+  <WebUI/>
+  <TemplateURL/>
+  <Icon>https://image.flaticon.com/icons/png/512/496/496230.png</Icon>
+  <ExtraParams/>
+  <Description>
+	</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>17500</HostPort>
+        <ContainerPort>17500</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+      <Port>
+        <HostPort>9001</HostPort>
+        <ContainerPort>9001</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Data>
+    <Volume>
+      <HostDir>/mnt/user/docker/local_cdn</HostDir>
+      <ContainerDir>/app</ContainerDir>
+      <Mode>rw</Mode>
+    </Volume>
+  </Data>
+  <Config Name="Container App Contents" Target="/app" Default="/mnt/user/docker/local_cdn" Mode="rw" Description="The APP Files are here" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/docker/local_cdn</Config>
+  <Config Name="Web UI (TCP)" Target="9001" Default="9001" Mode="tcp" Description="Home Page" Type="Port" Display="advanced" Required="true" Mask="false">9001</Config>
+  <Config Name="Timezone file" Target="/etc/localtime" Default="/etc/localtime" Mode="ro" Description="Timezone file" Type="Path" Display="advanced-hide" Required="true" Mask="false">/etc/localtime</Config>
+</Container>

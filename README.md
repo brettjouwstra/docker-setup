@@ -59,26 +59,9 @@ docker run -d --name=registrywatch -p 8600:8000 -v /docker/regui/config.yml:/opt
 [Reference](https://github.com/Quiq/docker-registry-ui)
 
 
-### Docker Registry - Includes htpasswd
+### Docker Registry 
 
-```Dockerfile
-# Install htpasswd 
-apt install apache2-utils
-
-# Create the file 
-htpasswd -c /file/path/.htpasswd username
-
-docker run -d \
-  --restart=always \
-  --name registry \
-  -e "REGISTRY_AUTH=htpasswd" \
-  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
-  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
-  -e REGISTRY_HTTP_ADDR=0.0.0.0:5000 \
-  -e REGISTRY_HTTP_SECRET="secret" \
-  -p 5000:5000 \
-  registry:2
-```
+View a [step-by-step setup](https://github.com/brettjouwstra/docker-setup/blob/main/docker_registry.md)
 
 ### Firebird - The Open Source SQL
 

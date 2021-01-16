@@ -21,8 +21,8 @@
     <Mode>bridge</Mode>
     <Publish>
       <Port>
-        <HostPort>17500</HostPort>
-        <ContainerPort>17500</ContainerPort>
+        <HostPort>9001</HostPort>
+        <ContainerPort>9001</ContainerPort>
         <Protocol>tcp</Protocol>
       </Port>
       <Port>
